@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import VideoPlayer from './VideoPlayer'
 import ScenesTable from './ScenesTable'
 import Controls from './Controls'
 import { ScenesProvider } from './ScenesContext'
+import TimelineVisualization from './TimelineVisualization'
 
 const Scenes: React.FC = () => {
 	const videoRef = useRef<HTMLVideoElement>(null)
 	const [currentTime, setCurrentTime] = useState<number>(0)
+	const [videoDuration, setVideoDuration] = useState<number>(0)
 
 	useEffect(() => {
 		const handleTimeUpdate = () => {
@@ -45,9 +47,16 @@ const Scenes: React.FC = () => {
 			}
 		}
 
+		const handleLoadedMetadata = () => {
+			if (videoRef.current) {
+				setVideoDuration(videoRef.current.duration)
+			}
+		}
+
 		const video = videoRef.current
 		if (video) {
 			video.addEventListener('timeupdate', handleTimeUpdate)
+			video.addEventListener('loadedmetadata', handleLoadedMetadata)
 		}
 
 		document.addEventListener('keydown', handleKeyDown)
@@ -55,6 +64,7 @@ const Scenes: React.FC = () => {
 		return () => {
 			if (video) {
 				video.removeEventListener('timeupdate', handleTimeUpdate)
+				video.removeEventListener('loadedmetadata', handleLoadedMetadata)
 			}
 			document.removeEventListener('keydown', handleKeyDown)
 		}
@@ -79,6 +89,7 @@ const Scenes: React.FC = () => {
 				<div style={{ width: '49%', display: 'inline-block' }}>
 					<ScenesTable videoRef={videoRef} />
 				</div>
+				<TimelineVisualization videoDuration={videoDuration} />
 			</div>
 		</ScenesProvider>
 	)

@@ -1,0 +1,12 @@
+.scene {
+	position: absolute;
+	height: 100%;
+	background-color: #007bff;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+.scene:hover {
+	background-color: blue;
+}

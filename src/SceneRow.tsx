@@ -27,6 +27,12 @@ const SceneRow: React.FC<SceneRowProps> = ({
 	onSceneChange,
 	onRemoveScene
 }) => {
+	const duration = scene.end - scene.start
+	// Максимальная ширина полосы в пикселях
+	const MAX_WIDTH = 200
+	// Предполагаем, что максимальная длина сцены 10 минут (600 секунд)
+	const scale = MAX_WIDTH / 600
+
 	return (
 		<tr>
 			<td>{index + 1}</td>
@@ -63,6 +69,16 @@ const SceneRow: React.FC<SceneRowProps> = ({
 
 			<td>
 				<button onClick={() => onRemoveScene(index)}>x</button>
+			</td>
+			<td>
+				<div
+					style={{
+						backgroundColor: '#007bff',
+						height: '20px',
+						width: `${Math.min(duration * scale, MAX_WIDTH)}px`,
+						borderRadius: '2px'
+					}}
+				/>
 			</td>
 		</tr>
 	)

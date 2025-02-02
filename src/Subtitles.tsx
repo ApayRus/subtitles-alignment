@@ -22,7 +22,7 @@ const LinedTextarea: React.FC = () => {
 		const result = phrases.reduce(
 			(prev, item) => {
 				const { start, end, body } = item
-				const newLineText = `${body.replace('\n', '<br />')}`
+				const newLineText = `${body.replace(/\n/g, '<br />')}`
 				const newLineTiming = `${start.toFixed(2)}\t${end.toFixed(2)}`
 				return {
 					text: prev.text + newLineText + '\n',
